@@ -1,222 +1,164 @@
-#  AI Based Student Attendance Prediction & Notification System
-### Final Year  BCA Project | Python · FastAPI · scikit-learn · Telegram · React
+# AI Based Student Attendance Prediction and Notification System
+
+Final Year BCA Project | Python, FastAPI, scikit-learn, React, Telegram
 
 ---
 
-## Table of Contents
-1. [System Architecture](#1-system-architecture)
-2. [Project Folder Structure](#2-project-folder-structure)
-3. [Data Structure Design](#3-data-structure-design)
-4. [How the Math Works](#4-how-the-math-works)
-5. [How the ML Model Works](#5-how-the-ml-model-works)
-6. [Step-by-Step Setup](#6-step-by-step-setup)
-7. [Running the Backend API](#7-running-the-backend-api)
-8. [Training the ML Model](#8-training-the-ml-model)
-9. [Running the Telegram Bot](#9-running-the-telegram-bot)
-10. [Running the React Dashboard](#10-running-the-react-dashboard)
-11. [API Reference](#11-api-reference)
-12. [Deployment Guide](#12-deployment-guide)
-13. [Demo Script for Presentation](#13-demo-script-for-presentation)
+## Project Overview
+
+A full-stack AI system that helps college students track their subject-wise attendance, calculate how many classes they can safely miss, and predict if they are at risk of falling below the required attendance percentage.
+
+Students interact through a Telegram bot or a React web dashboard.
 
 ---
 
-## 1. System Architecture
+## Features
 
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                        Attendance System                        │
-├─────────────────────────────────────────────────────────────────┤
-│                                                                 │
-│   Student          Telegram Bot          React Dashboard        │
-│   (User)  ──────▶  (bot_handler.py) ◀── (Vercel)               │
-│                         │                    │                  │
-│                         ▼                    ▼                  │
-│                  ┌──────────────────────────────┐               │
-│                  │   FastAPI Backend (Render)   │               │
-│                  │   main.py                    │               │
-│                  │       │                      │               │
-│                  │  ┌────┴────────────────────┐ │               │
-│                  │  │  attendance_engine.py   │ │               │
-│                  │  │  (Math calculations)    │ │               │
-│                  │  └─────────────────────────┘ │               │
-│                  │  ┌─────────────────────────┐ │               │
-│                  │  │  prediction_model.py    │ │               │
-│                  │  │  (ML predictions)       │ │               │
-│                  │  └─────────────────────────┘ │               │
-│                  │  ┌─────────────────────────┐ │               │
-│                  │  │  storage.py             │ │               │
-│                  │  │  (JSON + CSV files)     │ │               │
-│                  │  └─────────────────────────┘ │               │
-│                  └──────────────────────────────┘               │
-│                                                                 │
-│   Data Files:  data/students.json                               │
-│                data/attendance.csv                              │
-│   ML Files:    ml/model.pkl (trained model)                     │
-│                ml/dataset.csv (training data)                   │
-└─────────────────────────────────────────────────────────────────┘
-```
-
-### Component Responsibilities
-
-| Component | File | What it does |
-|---|---|---|
-| FastAPI Backend | `backend/main.py` | Hosts all API endpoints, connects everything |
-| Attendance Engine | `backend/attendance_engine.py` | Math calculations (%, safe bunks) |
-| ML Predictor | `backend/prediction_model.py` | Loads model, returns risk level |
-| Storage | `backend/storage.py` | Read/write JSON and CSV files |
-| Telegram Bot | `backend/bot_handler.py` | Chatbot interface for students |
-| ML Training | `ml/train_model.py` | Trains and saves the Random Forest model |
-| React Dashboard | `frontend/src/App.jsx` | Web UI showing all data |
+- Subject-wise attendance tracking
+- Safe bunk calculator using mathematical formula
+- Machine learning risk prediction (Random Forest)
+- Telegram chatbot with natural language support
+- React web dashboard with attendance charts
+- MongoDB Atlas for persistent cloud storage
+- College roll number validation (format: U19MT23S0054)
+- LLM-powered advice via OpenRouter (optional)
 
 ---
 
-## 2. Project Folder Structure
+## Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Backend API | Python, FastAPI |
+| Database | MongoDB Atlas |
+| ML Model | scikit-learn (Random Forest) |
+| Frontend | React 18, Vite |
+| Telegram Bot | python-telegram-bot |
+| LLM (optional) | OpenRouter API |
+| Deployment | Render (backend), Vercel (frontend) |
+
+---
+
+## Project Structure
 
 ```
-attendance-project/
+attendance-system/
 │
-├── backend/                    ← FastAPI backend (Python)
-│   ├── main.py                 ← API routes and app entry point
-│   ├── attendance_engine.py    ← Math: percentage, safe bunks
-│   ├── prediction_model.py     ← Loads ML model, predicts risk
-│   ├── storage.py              ← Read/write JSON and CSV files
-│   ├── bot_handler.py          ← Telegram bot
-│   └── requirements.txt        ← Python dependencies
+├── backend/
+│   ├── main.py                 API routes
+│   ├── attendance_engine.py    Math calculations
+│   ├── prediction_model.py     ML predictions
+│   ├── storage.py              MongoDB database layer
+│   ├── llm_service.py          OpenRouter LLM integration
+│   ├── bot_handler.py          Telegram bot entry point
+│   ├── bot/
+│   │   ├── helpers.py          API calls, intent detection
+│   │   ├── registration.py     /register conversation
+│   │   ├── commands.py         All slash commands
+│   │   └── natural_language.py Free-text message handler
+│   └── requirements.txt
 │
-├── ml/                         ← Machine Learning
-│   ├── train_model.py          ← Training script
-│   ├── dataset.csv             ← Training data (100 students)
-│   └── model.pkl               ← Saved trained model (auto-generated)
+├── ml/
+│   ├── train_model.py          Model training script
+│   ├── dataset.csv             Training data
+│   └── model.pkl               Trained model (generated)
 │
-├── frontend/                   ← React dashboard
+├── frontend/
 │   ├── src/
-│   │   ├── App.jsx             ← Main dashboard component
-│   │   ├── index.css           ← Styles
-│   │   └── main.jsx            ← React entry point
+│   │   ├── App.jsx
+│   │   ├── index.css
+│   │   └── main.jsx
 │   ├── index.html
 │   ├── package.json
 │   └── vite.config.js
 │
-├── data/                       ← Data storage (no database needed)
-│   ├── students.json           ← Student profiles
-│   └── attendance.csv          ← Attendance records
-│
-├── render.yaml                 ← Render deployment config
-└── README.md                   ← This file
+└── data/                       Local data (not pushed to GitHub)
 ```
 
 ---
 
-## 3. Data Structure Design
+## Setup
 
-### students.json
-Stores student profiles as a key-value object where the key is the student ID.
+### 1. Clone the repo
 
-```json
-{
-  "CS2021001": {
-    "student_id": "U19MT23S0040",
-    "name": "Arjun Sharma",
-    "required_percentage": 75.0,
-    "created_at": "2026-01-10T09:00:00"
-  }
-}
+```bash
+git clone https://github.com/YOUR_USERNAME/attendance-system.git
+cd attendance-system
 ```
 
-### attendance.csv
-Stores every attendance event as a row. Each row also stores the running totals so we can quickly look up the latest state.
+### 2. Create virtual environment
+
+```bash
+python -m venv .venv
+
+# Windows
+.venv\Scripts\activate
+
+# Mac / Linux
+source .venv/bin/activate
+```
+
+### 3. Install dependencies
+
+```bash
+pip install -r backend/requirements.txt
+```
+
+### 4. Create backend/.env
 
 ```
-student_id, date,       status,  subject,     total_classes, classes_attended
-CS2021001,  2026-01-15, present, Mathematics, 1,             1
-CS2021002,  2026-01-16, present, Physics,     2,             2
-CS2021003,  2026-01-17, absent,  Chemistry,   3,             2
+TELEGRAM_BOT_TOKEN=your_token_here
+BACKEND_URL=http://localhost:8000
+MONGODB_URI=your_mongodb_atlas_connection_string
+OPENROUTER_API_KEY=your_key_here
 ```
 
-**Why CSV and not a database?**
-For a college project that needs to run on free hosting, CSV files are perfect:
-- No setup required
-- No installation
-- Easy to inspect and debug
-- Works on any machine
+### 5. Train the ML model
+
+```bash
+cd ml
+python train_model.py
+cd ..
+```
+
+### 6. Run the backend
+
+```bash
+cd backend
+uvicorn main:app --reload --port 8000
+```
+
+### 7. Run the Telegram bot (separate terminal)
+
+```bash
+cd backend
+python bot_handler.py
+```
+
+### 8. Run the frontend (separate terminal)
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Open http://localhost:5173
 
 ---
 
-## 4. How the Math Works
+## Team
 
-### Attendance Percentage
-```
-attendance_percentage = (classes_attended / total_classes) × 100
-```
-Example: 30 attended out of 40 total → (30/40) × 100 = **75%**
+| Name | Roll Number |
+|---|---|
+| S Abubakker Siddiq | U19MT23S0054 |
+| Raghul Muniraj | U19MT23S0042 |
+| Prajwal V | U19MT23S0040 |
 
-### Safe Bunk Calculation
-
-**Question:** How many more classes can I skip while staying above 75%?
-
-**Define:**
-- P = classes attended (present)
-- T = total classes conducted
-- R = required fraction (0.75 for 75%)
-- x = number of future classes to skip
-
-**Constraint:** After skipping x classes, attendance must still be ≥ R:
-```
-P / (T + x) ≥ R
-```
-
-**Solve for x:**
-```
-P ≥ R × (T + x)
-P ≥ R×T + R×x
-P - R×T ≥ R×x
-x ≤ (P - R×T) / R
-
-∴  safe_bunks = floor( (P - R×T) / R )
-```
-
-**Example:**
-```
-P = 30,  T = 36,  R = 0.75
-safe_bunks = floor( (30 - 0.75 × 36) / 0.75 )
-           = floor( (30 - 27) / 0.75 )
-           = floor( 3 / 0.75 )
-           = floor( 4.0 )
-           = 4
-```
-The student can skip **4 more classes** and still be at exactly 75%.
+**Guide:** Mrs. Nafisa S, Associate Professor, Department of Computer Science
 
 ---
 
-## 5. How the ML Model Works
+## Status
 
-### What it predicts
-The model predicts whether a student will fall below 75% attendance (binary classification: at_risk = 0 or 1).
-
-### Features (inputs to the model)
-
-| Feature | Description | Example |
-|---|---|---|
-| `attendance_percentage` | Current attendance % | 72.5 |
-| `recent_absences` | Absences in last 10 classes | 4 |
-| `total_classes` | Total classes conducted | 40 |
-| `attendance_trend` | Is attendance improving? (+ve) or declining? (-ve) | -2 |
-
-### Algorithm: Random Forest Classifier
-A Random Forest builds many decision trees and takes a majority vote. It's great because:
-- Works well on small datasets
-- Handles non-linear patterns
-- Doesn't need feature scaling
-- Gives probability scores (not just yes/no)
-
-### Risk Levels
-
-| Probability | Risk Level | Meaning |
-|---|---|---|
-| 0% – 34% | 🟢 LOW | Student is safe |
-| 35% – 64% | 🟡 MEDIUM | Student should be careful |
-| 65% – 100% | 🔴 HIGH | Immediate action needed |
-
----
-## Authors
-GOAT Attendance System — Final Year Project 2026
+Work in progress — MongoDB Atlas integration in progress.
