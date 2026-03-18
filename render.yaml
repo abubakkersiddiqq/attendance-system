@@ -1,0 +1,16 @@
+# render.yaml — Deploy backend to Render (free tier)
+# Push this file to your GitHub repo root.
+# Then connect the repo at https://render.com
+
+services:
+  - type: web
+    name: goat-attendance-api
+    runtime: python
+    plan: free
+    buildCommand: pip install -r backend/requirements.txt && cd ml && python train_model.py
+    startCommand: cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false   # Set this manually in Render dashboard
+      - key: BACKEND_URL
+        value: https://goat-attendance-api.onrender.com
