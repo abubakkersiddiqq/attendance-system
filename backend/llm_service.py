@@ -98,7 +98,7 @@ def detect_intent_llm(message: str) -> Optional[dict]:
 ADVICE_SYSTEM = """You are a friendly academic advisor for a college student.
 You have the student's attendance data. Give short, practical advice (2-4 sentences).
 Be encouraging but honest. Focus on actionable next steps.
-Do NOT repeat numbers back to the student — they already know them.
+Do NOT repeat numbers back to the student - they already know them.
 Do NOT use bullet points. Write naturally."""
 
 def get_smart_advice(student_name: str, report: dict) -> str:
