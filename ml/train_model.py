@@ -5,7 +5,7 @@ This script trains a machine learning model to predict
 whether a student is at risk of falling below the
 required attendance percentage.
 
-Author: GOAT Project
+Author: Abubakker Siddiq 
 Algorithm: Random Forest Classifier
 """
 
