@@ -15,11 +15,6 @@ New endpoints:
   GET  /history/{id}/{subject}    → history for one subject
   GET  /students                  → list all students
   GET  /health                    → health check
-"""
-"""
-main.py v3
-==========
-New endpoints:
   POST /student/create            → create with validated roll number
   POST /student/add-subject       → add subject to existing student
   POST /student/remove-subject    → remove subject
