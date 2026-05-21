@@ -48,7 +48,13 @@ def POST(path: str, body: dict) -> dict:
     except Exception as e:
         return {"error": str(e)}
 
-
+def GET(path: str) -> dict:
+    url = f"{BACKEND}{path}"
+    print(f"[DEBUG] GET {url}")  # ← add this
+    try:
+        r = requests.get(url, timeout=30)
+    except:
+        pass
 # ── Intent detection ──────────────────────────────────────────────────────────
 
 KEYWORD_INTENTS = {
