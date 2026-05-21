@@ -99,5 +99,7 @@ def main():
     app.run_polling()
 
 
+run_bot = main
+
 if __name__ == "__main__":
     main()

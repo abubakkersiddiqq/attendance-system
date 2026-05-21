@@ -5,14 +5,14 @@ Set OPENROUTER_API_KEY in your .env to enable.
 If the key is missing, all functions fall back gracefully
 to the rule-based system — nothing breaks.
 
-Model: mistralai/mistral-7b-instruct:free 
+Model: mistralai/mistral-7b-instruct:free or openrouter/free
 """
 
 import os, json, requests
 from typing import Optional
 
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY", "")
-LLM_MODEL          = os.getenv("LLM_MODEL", "mistralai/mistral-7b-instruct:free")
+LLM_MODEL          = os.getenv("LLM_MODEL", "openrouter/free")
 LLM_ENABLED        = bool(OPENROUTER_API_KEY)
 
 OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions"
