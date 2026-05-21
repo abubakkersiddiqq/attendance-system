@@ -31,18 +31,7 @@ from pydantic import BaseModel
 from typing import Optional, List
 import storage, attendance_engine, prediction_model, llm_service
 
-from contextlib import asynccontextmanager
-import asyncio
-from bot_handler import start_bot
-
-
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    await asyncio.sleep(3)
-    task = asyncio.create_task(start_bot())
-    yield
-    task.cancel()   
-app = FastAPI(title="GOAT Attendance API v3", version="3.0.0", lifespan=lifespan)
+app = FastAPI(title="GOAT Attendance API v3", version="3.0.0")
 app.add_middleware(CORSMiddleware, allow_origins=["*"],
                    allow_methods=["*"], allow_headers=["*"])
 

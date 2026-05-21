@@ -8,45 +8,34 @@ Final Year BCA Project | Python, FastAPI, scikit-learn, React, Telegram
 
 A full-stack AI system that helps college students track their subject-wise attendance, calculate how many classes they can safely miss, and predict if they are at risk of falling below the required attendance percentage.
 
-Students interact through a **Telegram bot** or a **React web dashboard**.
-
----
-
-## Live Demo
-
-| Service            | URL                                              |
-| ------------------ | ------------------------------------------------ |
-| Backend API        | https://attendance-system-eev2.onrender.com      |
-| Frontend Dashboard | https://your-app.vercel.app                      |
-| API Docs (Swagger) | https://attendance-system-eev2.onrender.com/docs |
-| Telegram Bot       | @AttendIQBot                                     |
+Students interact through a Telegram bot or a React web dashboard.
 
 ---
 
 ## Features
 
-- Subject-wise attendance tracking per student
+- Subject-wise attendance tracking
 - Safe bunk calculator using mathematical formula
-- ML risk prediction — Random Forest Classifier (100% accuracy on test set)
-- Telegram bot with natural language understanding and slash commands
-- React web dashboard with real-time attendance cards
+- Machine learning risk prediction (Random Forest)
+- Telegram chatbot with natural language support
+- React web dashboard with attendance charts
 - MongoDB Atlas for persistent cloud storage
-- LLM-powered advice via OpenRouter API
-- College roll number validation (format: `U19MT23S0054`)
+- College roll number validation (format: U19MT23S0054)
+- LLM-powered advice via OpenRouter (optional)
 
 ---
 
 ## Tech Stack
 
-| Layer        | Technology                                |
-| ------------ | ----------------------------------------- |
-| Backend API  | Python 3.11, FastAPI                      |
-| Database     | MongoDB Atlas (pymongo)                   |
-| ML Model     | scikit-learn — Random Forest Classifier   |
-| Frontend     | React 18, Vite                            |
-| Telegram Bot | python-telegram-bot v21                   |
-| LLM          | OpenRouter API (`openrouter/free`)        |
-| Deployment   | Render (backend + bot), Vercel (frontend) |
+| Layer | Technology |
+|---|---|
+| Backend API | Python, FastAPI |
+| Database | MongoDB Atlas |
+| ML Model | scikit-learn (Random Forest) |
+| Frontend | React 18, Vite |
+| Telegram Bot | python-telegram-bot |
+| LLM (optional) | OpenRouter API |
+| Deployment | Render (backend), Vercel (frontend) |
 
 ---
 
@@ -56,8 +45,8 @@ Students interact through a **Telegram bot** or a **React web dashboard**.
 attendance-system/
 │
 ├── backend/
-│   ├── main.py                 API routes + bot lifespan
-│   ├── attendance_engine.py    Safe bunk math
+│   ├── main.py                 API routes
+│   ├── attendance_engine.py    Math calculations
 │   ├── prediction_model.py     ML predictions
 │   ├── storage.py              MongoDB database layer
 │   ├── llm_service.py          OpenRouter LLM integration
@@ -71,8 +60,8 @@ attendance-system/
 │
 ├── ml/
 │   ├── train_model.py          Model training script
-│   ├── dataset.csv             Training data (100 records)
-│   └── model.pkl               Trained model
+│   ├── dataset.csv             Training data
+│   └── model.pkl               Trained model (generated)
 │
 ├── frontend/
 │   ├── src/
@@ -83,17 +72,17 @@ attendance-system/
 │   ├── package.json
 │   └── vite.config.js
 │
-└── runtime.txt                 Python 3.11.9 (for Render)
+└── data/                       Local data (not pushed to GitHub)
 ```
 
 ---
 
-## Local Setup
+## Setup
 
 ### 1. Clone the repo
 
 ```bash
-git clone https://github.com/abubakkersiddiqq/attendance-system.git
+git clone https://github.com/YOUR_USERNAME/attendance-system.git
 cd attendance-system
 ```
 
@@ -101,8 +90,10 @@ cd attendance-system
 
 ```bash
 python -m venv .venv
+
 # Windows
 .venv\Scripts\activate
+
 # Mac / Linux
 source .venv/bin/activate
 ```
@@ -113,14 +104,13 @@ source .venv/bin/activate
 pip install -r backend/requirements.txt
 ```
 
-### 4. Create `backend/.env`
+### 4. Create backend/.env
 
 ```
 TELEGRAM_BOT_TOKEN=your_token_here
 BACKEND_URL=http://localhost:8000
 MONGODB_URI=your_mongodb_atlas_connection_string
 OPENROUTER_API_KEY=your_key_here
-LLM_MODEL=openrouter/free
 ```
 
 ### 5. Train the ML model
@@ -131,18 +121,23 @@ python train_model.py
 cd ..
 ```
 
-### 6. Run backend + bot + frontend (3 terminals)
+### 6. Run the backend
 
 ```bash
-# Terminal 1 - Backend
 cd backend
 uvicorn main:app --reload --port 8000
+```
 
-# Terminal 2 - Bot (use mobile hotspot if on college WiFi)
+### 7. Run the Telegram bot (separate terminal)
+
+```bash
 cd backend
 python bot_handler.py
+```
 
-# Terminal 3 - Frontend
+### 8. Run the frontend (separate terminal)
+
+```bash
 cd frontend
 npm install
 npm run dev
@@ -152,32 +147,18 @@ Open http://localhost:5173
 
 ---
 
-## ML Model
-
-- Algorithm: Random Forest Classifier
-- Training data: 100 synthetic student records
-- Train/test split: 80/20
-- Test accuracy: 100%
-- Input features: total classes, attended, percentage, trend
-- Output: `at_risk` / `safe`
-
----
-
 ## Team
 
-| Name               | Roll Number  |
-| ------------------ | ------------ |
+| Name | Roll Number |
+|---|---|
 | S Abubakker Siddiq | U19MT23S0054 |
-| Raghul Muniraj     | U19MT23S0042 |
-| Prajwal V          | U19MT23S0040 |
+| Raghul Muniraj | U19MT23S0042 |
+| Prajwal V | U19MT23S0040 |
 
 **Guide:** Mrs. Nafisa S, Associate Professor, Department of Computer Science
 
 ---
 
-## Deployment
+## Status
 
-- Backend deployed on **Render** (free tier) — auto-starts Telegram bot via FastAPI lifespan
-- Frontend deployed on **Vercel**
-- Database on **MongoDB Atlas** (free M0 cluster)
-- Uptime maintained via **UptimeRobot** (pings `/health` every 5 minutes)
+Work in progress — MongoDB Atlas integration in progress.
