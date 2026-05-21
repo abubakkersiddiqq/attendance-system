@@ -96,6 +96,7 @@ async def main():
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
 
     print("✅ Bot is running. Press Ctrl+C to stop.")
+    await app.bot.delete_webhook(drop_pending_updates=True)
     await app.initialize()
     await app.start()
     await app.updater.start_polling()
