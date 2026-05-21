@@ -99,7 +99,7 @@ async def main():
     await app.bot.delete_webhook(drop_pending_updates=True)
     await app.initialize()
     await app.start()
-    await app.updater.start_polling()
+    await app.updater.start_polling(drop_pending_updates=True)
 
 
 async def start_bot():

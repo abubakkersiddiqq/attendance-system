@@ -38,6 +38,7 @@ from bot_handler import start_bot
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    await asyncio.sleep(3)
     task = asyncio.create_task(start_bot())
     yield
     task.cancel()   
