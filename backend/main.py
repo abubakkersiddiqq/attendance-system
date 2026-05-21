@@ -38,9 +38,9 @@ from bot_handler import start_bot
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    asyncio.create_task(start_bot())
+    task = asyncio.create_task(start_bot())
     yield
-    
+    task.cancel()   
 app = FastAPI(title="GOAT Attendance API v3", version="3.0.0", lifespan=lifespan)
 app.add_middleware(CORSMiddleware, allow_origins=["*"],
                    allow_methods=["*"], allow_headers=["*"])

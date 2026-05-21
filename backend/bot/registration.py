@@ -238,7 +238,7 @@ async def cmd_link(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
 
     sid  = ctx.args[0].strip().upper()
     data = GET(f"/student/{sid}")
-    if "error" in data:
+    if not data or "error" in data:
         await update.message.reply_text(
             f"❌ Student `{sid}` not found.\n\n"
             "If you are new, use /register to create a profile first.",
