@@ -27,7 +27,7 @@ USER_MAP: dict = {}
 
 def GET(path: str) -> dict:
     try:
-        r = requests.get(f"{BACKEND}{path}", timeout=10)
+        r = requests.get(f"{BACKEND}{path}", timeout=30)
         r.raise_for_status()
         return r.json()
     except requests.exceptions.HTTPError as e:
@@ -39,7 +39,7 @@ def GET(path: str) -> dict:
 
 def POST(path: str, body: dict) -> dict:
     try:
-        r = requests.post(f"{BACKEND}{path}", json=body, timeout=10)
+        r = requests.post(f"{BACKEND}{path}", json=body, timeout=30)
         r.raise_for_status()
         return r.json()
     except requests.exceptions.HTTPError as e:
