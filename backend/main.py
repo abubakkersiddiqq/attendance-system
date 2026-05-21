@@ -32,15 +32,15 @@ from typing import Optional, List
 import storage, attendance_engine, prediction_model, llm_service
 
 from contextlib import asynccontextmanager
-import threading
-import bot_handler
+import asyncio
+from bot_handler import start_bot
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    thread = threading.Thread(target=bot_handler.run_bot, daemon=True)
-    thread.start()
+    asyncio.create_task(start_bot())
     yield
-
+    
 app = FastAPI(title="GOAT Attendance API v3", version="3.0.0", lifespan=lifespan)
 app.add_middleware(CORSMiddleware, allow_origins=["*"],
                    allow_methods=["*"], allow_headers=["*"])

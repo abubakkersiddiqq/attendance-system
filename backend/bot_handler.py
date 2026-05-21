@@ -51,7 +51,7 @@ TOKEN   = os.getenv("TELEGRAM_BOT_TOKEN", "YOUR_TOKEN_HERE")
 BACKEND = os.getenv("BACKEND_URL", "http://localhost:8000")
 
 
-def main():
+async def main():
     print("🤖 Attendance Bot starting...")
     print(f"   Backend : {BACKEND}")
     print(f"   LLM     : {'ENABLED' if llm_service.LLM_ENABLED else 'DISABLED (set OPENROUTER_API_KEY to enable)'}")
@@ -96,14 +96,15 @@ def main():
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
 
     print("✅ Bot is running. Press Ctrl+C to stop.")
-    import asyncio
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-    app.run_polling()
+    await app.initialize()
+    await app.start()
+    await app.updater.start_polling()
 
 
-run_bot = main
+async def start_bot():
+    await main()
+
 
 if __name__ == "__main__":
-    main()
-
+    import asyncio
+    asyncio.run(main())
