@@ -14,8 +14,8 @@ import numpy as np
 import pandas as pd
 
 # -- Path to the saved model ===============================
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-MODEL_PATH = os.path.join(BASE_DIR, "ml", "model.pkl")
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+MODEL_PATH = os.path.join(BASE_DIR, "..", "ml", "model.pkl")
 
 # --- Load model once at module import (not on every request)=============
 _model_data = None
