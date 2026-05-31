@@ -401,3 +401,9 @@ def get_attendance_history(sid: str, subject: str = None) -> list:
             "attendance_percentage": round(a / t * 100, 2) if t else 0,
         })
     return result
+
+def delete_student(sid: str):
+    db = get_db()
+    db.students.delete_one({"student_id": sid})
+    db.attendance.delete_many({"student_id": sid})
+    return True

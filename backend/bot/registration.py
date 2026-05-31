@@ -125,7 +125,7 @@ async def reg_get_name(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
         f"✅ Name: *{name}*\n\n"
         "*Step 3 of 3* - Enter your *subjects*, separated by commas.\n\n"
         "Example:\n"
-        "`AI and Aplication, Fundamentals of DataScience, PHP with mySQL, PHP Lab, WDMS`\n\n"
+        "`AI and Application, Fundamentals of DataScience, PHP with MySQL, PHP Lab, WDMS`\n\n"
         "Rules:\n"
         "- Minimum 1 subject, maximum 15\n"
         "- No duplicate subjects\n"

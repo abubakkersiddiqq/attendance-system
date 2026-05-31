@@ -16,7 +16,7 @@ from telegram import Update
 from telegram.ext import ContextTypes
 
 from bot.helpers import GET, POST, require_sid, risk_emoji, pct_emoji, safe_bunks_calc
-
+from bot.helpers import DELETE, USER_MAP
 
 # ── /start ────────────────────────────────────────────────────────────────────
 
@@ -432,3 +432,16 @@ async def cmd_history(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
         f"📜 *Last {len(lines)} records{label}:*\n\n" + "\n".join(lines),
         parse_mode="Markdown",
     )
+async def cmd_deleteaccount(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
+    sid = await require_sid(update)
+    if not sid:
+        return
+    result = await DELETE(f"/students/{sid}")
+    if result:
+        USER_MAP.pop(update.effective_user.id, None)
+        await update.message.reply_text(
+            "✅ Your account and all attendance records have been permanently deleted.\n"
+            "Use /register to create a new account."
+        )
+    else:
+        await update.message.reply_text("❌ Failed to delete account. Please try again.")

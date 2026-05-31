@@ -166,3 +166,11 @@ async def require_sid(update: Update) -> str | None:
             parse_mode="Markdown",
         )
     return sid
+
+async def DELETE(path: str):
+    try:
+        r = requests.delete(f"{BACKEND}{path}")
+        return r.status_code == 200
+    except Exception as e:
+        print(f"DELETE error: {e}")
+        return False

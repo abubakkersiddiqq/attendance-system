@@ -43,7 +43,7 @@ from bot.commands import (
     cmd_present, cmd_absent,
     cmd_bunk,
     cmd_predict, cmd_report, cmd_advice, cmd_plan,
-    cmd_history,
+    cmd_history,cmd_deleteaccount
 )
 from bot.natural_language import handle_message
 
@@ -89,6 +89,7 @@ def main():
         ("advice",        cmd_advice),
         ("plan",          cmd_plan),
         ("history",       cmd_history),
+        ("deleteaccount", cmd_deleteaccount),
     ]:
         app.add_handler(CommandHandler(cmd, fn))
 
