@@ -143,6 +143,14 @@ def get_student(student_id: str):
         raise HTTPException(404, f"Student '{student_id}' not found")
     return s
 
+@app.delete("/student/{student_id}")
+def delete_student(student_id: str):
+    s = storage.get_student(student_id)
+    if not s:
+        raise HTTPException(404, f"Student '{student_id}' not found")
+    storage.delete_student(student_id)
+    return {"message": f"Student {student_id} and all attendance records deleted successfully"}
+
 
 @app.get("/subjects/{student_id}")
 def get_subjects(student_id: str):

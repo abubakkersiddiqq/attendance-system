@@ -436,7 +436,7 @@ async def cmd_deleteaccount(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     sid = await require_sid(update)
     if not sid:
         return
-    result = await DELETE(f"/students/{sid}")
+    result = await DELETE(f"/student/{sid}")
     if result:
         USER_MAP.pop(update.effective_user.id, None)
         await update.message.reply_text(
