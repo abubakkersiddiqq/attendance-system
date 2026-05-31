@@ -42,7 +42,8 @@ async def cmd_help(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
         "📋 *Bot Commands*\n\n"
         "*Setup*\n"
         "/register - Create your profile (guided steps)\n"
-        "/link U19MT23S0054 - Link your roll number\n\n"
+        "/link U19MT23S0054 - Link your roll number\n"
+        "/deleteaccount - Permanently delete your account\n\n"
         "*Subjects (Settings only)*\n"
         "/subjects - List all your subjects\n"
         "/addsubject Python Programming - Add a subject\n"
@@ -70,7 +71,6 @@ async def cmd_help(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
         "_What is my Database attendance?_",
         parse_mode="Markdown",
     )
-
 
 # ── Subject management ────────────────────────────────────────────────────────
 
