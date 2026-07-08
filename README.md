@@ -1,7 +1,6 @@
 # AI Based Student Attendance Prediction and Notification System
 
-Final Year BCA Project | Python, FastAPI, scikit-learn, React, Telegram
-
+Full-Stack AI System | Python, FastAPI, scikit-learn, React, Telegram
 ---
 
 ## Live Demo
@@ -200,12 +199,10 @@ Open http://localhost:5173
 
 ---
 
-## Team
+## Author
 
-| Name               | Roll Number  |
-| ------------------ | ------------ |
-| S Abubakker Siddiq | U19MT23S0054 |
-| Raghul Muniraj     | U19MT23S0042 |
-| Prajwal V          | U19MT23S0040 |
+**S Abubakker Siddiq** 
 
-**Guide:** Mrs. Nafisa S, Associate Professor, Department of Computer Science
+Designed and built independently: backend, ML model, Telegram bot, frontend, and deployment.
+
+
